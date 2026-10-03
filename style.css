@@ -1,0 +1,372 @@
+@font-face {
+    font-family: 'Cairo';
+    src: url('../fonts/cairo-variable.woff2') format('woff2-variations'),
+         url('../fonts/cairo-variable.woff2') format('woff2');
+    font-weight: 200 1000;
+    font-display: swap;
+    font-style: normal;
+}
+
+:root {
+    /* Colors */
+    --c-green: #1F3A2B;
+    --c-ochre: #B8862B;
+    --c-stone: #B9AD98;
+    --c-iron: #4A413A;
+    --c-orange: #D9622B;
+    --c-yellow: #D9A92B;
+    
+    /* Additional Colors */
+    --c-white: #ffffff;
+    --c-iron-face-1: #5a5148;
+    --c-iron-face-2: #3a322c;
+    --c-iron-face-3: #201b18;
+    --c-marker: #7a6f65;
+    --c-nut-1: #8a8782;
+    
+    /* Typography */
+    --f-main: 'Cairo', system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--f-main);
+    background-color: var(--c-stone);
+    /* Adding a subtle texture using a generated noise if possible, but keeping it clean for performance */
+    background-image: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 100% 100%, rgba(0,0,0,0.05) 0%, transparent 50%);
+    color: var(--c-iron);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Typography Hierarchy */
+h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.headline-green { color: var(--c-green); }
+.headline-ochre { color: var(--c-ochre); }
+
+.subline {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-weight: 400;
+    color: var(--c-iron);
+    opacity: 0.9;
+}
+
+.draft-tag {
+    display: inline-block;
+    background-color: var(--c-orange);
+    color: var(--c-white);
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Story Container */
+.story-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Sticky Clock */
+.clock-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Clock Face */
+.clock-face {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, var(--c-iron-face-1) 0%, var(--c-iron-face-2) 80%, var(--c-iron-face-3) 100%);
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.8),
+        inset 5px 5px 10px rgba(255,255,255,0.1),
+        0 20px 40px rgba(0,0,0,0.4),
+        0 0 0 15px var(--c-iron-face-2),
+        0 0 0 16px var(--c-yellow); /* Kerb yellow accent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .clock-face {
+        width: 500px;
+        height: 500px;
+    }
+}
+
+/* Clock Markers */
+.clock-markers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.marker {
+    position: absolute;
+    width: 8px;
+    height: 24px;
+    background: var(--c-marker);
+    left: 50%;
+    transform-origin: 50% 150px;
+    top: 10px;
+    margin-left: -4px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5), inset -1px -1px 2px rgba(0,0,0,0.4), inset 1px 1px 2px rgba(255,255,255,0.2);
+    border-radius: 2px;
+}
+
+@media (min-width: 768px) {
+    .marker {
+        transform-origin: 50% 250px;
+        height: 36px;
+        width: 12px;
+        margin-left: -6px;
+        top: 20px;
+    }
+}
+
+.m1 { transform: rotate(0deg); }
+.m2 { transform: rotate(30deg); }
+.m3 { transform: rotate(60deg); }
+.m4 { transform: rotate(90deg); }
+.m5 { transform: rotate(120deg); }
+.m6 { transform: rotate(150deg); }
+.m7 { transform: rotate(180deg); }
+.m8 { transform: rotate(210deg); }
+.m9 { transform: rotate(240deg); }
+.m10 { transform: rotate(270deg); }
+.m11 { transform: rotate(300deg); }
+.m12 { transform: rotate(330deg); }
+
+/* Center Nut */
+.center-nut {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle at 30% 30%, var(--c-nut-1), var(--c-iron));
+    border-radius: 50%;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.3);
+    z-index: 10;
+    /* hexagon shape */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+@media (min-width: 768px) {
+    .center-nut {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Wrench */
+.wrench-container {
+    position: absolute;
+    width: 240px;
+    height: 40px;
+    left: 50%;
+    top: 50%;
+    margin-left: -20px; /* offset for the pivot circle */
+    margin-top: -20px;
+    transform-origin: 20px 20px;
+    z-index: 5;
+    will-change: transform;
+}
+
+@media (min-width: 768px) {
+    .wrench-container {
+        width: 360px;
+        height: 60px;
+        margin-left: -30px;
+        margin-top: -30px;
+        transform-origin: 30px 30px;
+    }
+}
+
+.wrench-hand {
+    width: 100%;
+    height: 100%;
+    /* Initial shadow, will be updated via JS */
+    filter: drop-shadow(10px 10px 5px rgba(0,0,0,0.6));
+    will-change: filter;
+}
+
+.wrench-hand svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Chapters */
+.chapters-wrapper {
+    position: relative;
+    z-index: 2;
+    margin-top: -100vh; /* pull up over the sticky container */
+}
+
+.chapter {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    pointer-events: none; /* Let clicks pass through if needed, though mostly reading */
+}
+
+.chapter-content {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    pointer-events: auto;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-right: 4px solid var(--c-green);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.chapter.is-active .chapter-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    .chapter {
+        padding-right: 15%; /* Push text to the side */
+    }
+    .chapter-content {
+        font-size: 1.5rem;
+        max-width: 500px;
+    }
+}
+
+/* Closing Screen */
+.closing-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 3;
+    background: var(--c-stone);
+}
+
+/* Footer */
+.site-footer {
+    background-color: var(--c-iron);
+    color: var(--c-stone);
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+}
+
+.footer-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.eagle-container {
+    width: 100px;
+}
+
+.eagle-placeholder {
+    font-size: 0.8rem;
+    padding: 1rem;
+    border: 1px dashed var(--c-stone);
+    color: var(--c-stone);
+    border-radius: 8px;
+    opacity: 0.7;
+}
+
+.disclaimer {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.social-links a {
+    color: var(--c-stone);
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+
+.social-links a:hover,
+.social-links a:focus {
+    color: var(--c-yellow);
+    transform: scale(1.1);
+    background: rgba(255,255,255,0.1);
+}
+
+.signature {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 2rem;
+}
+
+/* Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .wrench-container,
+    .chapter-content {
+        transition: none !important;
+        will-change: auto;
+    }
+}
